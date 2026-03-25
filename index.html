@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Virtual Memory Management Simulation</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Virtual Memory Management Simulation</h1>
+      <p class="subtitle">Visualize page replacement algorithms step by step</p>
+    </header>
+
+    <section class="controls card">
+      <div class="control-group">
+        <label for="pageString">Page Reference String</label>
+        <input
+          type="text"
+          id="pageString"
+          placeholder="e.g. 7 0 1 2 0 3 0 4 2 3 0 3 2"
+          value="7 0 1 2 0 3 0 4 2 3 0 3 2"
+        />
+        <span class="hint">Enter page numbers separated by spaces</span>
+      </div>
+
+      <div class="control-row">
+        <div class="control-group">
+          <label for="frameCount">Number of Frames</label>
+          <input type="number" id="frameCount" min="1" max="10" value="3" />
+        </div>
+
+        <div class="control-group">
+          <label for="algorithm">Page Replacement Algorithm</label>
+          <select id="algorithm">
+            <option value="fifo">FIFO (First-In, First-Out)</option>
+            <option value="lru">LRU (Least Recently Used)</option>
+            <option value="optimal">Optimal</option>
+          </select>
+        </div>
+
+        <div class="control-group control-group--btn">
+          <button id="runBtn" class="btn btn--primary">Run Simulation</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="results" class="hidden">
+      <div class="stats-bar card">
+        <div class="stat">
+          <span class="stat__label">Total Pages</span>
+          <span class="stat__value" id="statTotal">0</span>
+        </div>
+        <div class="stat">
+          <span class="stat__label">Page Faults</span>
+          <span class="stat__value stat__value--fault" id="statFaults">0</span>
+        </div>
+        <div class="stat">
+          <span class="stat__label">Page Hits</span>
+          <span class="stat__value stat__value--hit" id="statHits">0</span>
+        </div>
+        <div class="stat">
+          <span class="stat__label">Fault Rate</span>
+          <span class="stat__value" id="statRate">0%</span>
+        </div>
+      </div>
+
+      <div class="table-wrapper card">
+        <h2 id="tableTitle">Simulation Table</h2>
+        <div class="table-scroll">
+          <table id="simTable">
+            <thead id="simHead"></thead>
+            <tbody id="simBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="legend card">
+        <h3>Legend</h3>
+        <div class="legend-items">
+          <span class="legend-item"><span class="badge badge--fault">F</span> Page Fault (page loaded into memory)</span>
+          <span class="legend-item"><span class="badge badge--hit">H</span> Page Hit (page already in memory)</span>
+          <span class="legend-item"><span class="cell cell--new">7</span> Newly loaded page</span>
+          <span class="legend-item"><span class="cell cell--evict">3</span> Evicted page (replaced)</span>
+          <span class="legend-item"><span class="cell cell--stay">0</span> Page staying in memory</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="algoInfo" class="card algo-info">
+      <h2>Algorithm Descriptions</h2>
+      <div class="algo-cards">
+        <div class="algo-card">
+          <h3>FIFO</h3>
+          <p>
+            <strong>First-In, First-Out</strong> replaces the page that has been
+            in memory the longest. A queue tracks the order pages entered memory.
+            Simple to implement but may evict heavily-used pages.
+          </p>
+        </div>
+        <div class="algo-card">
+          <h3>LRU</h3>
+          <p>
+            <strong>Least Recently Used</strong> replaces the page that has not
+            been accessed for the longest time. It assumes that pages used
+            recently will likely be used again soon (temporal locality).
+          </p>
+        </div>
+        <div class="algo-card">
+          <h3>Optimal</h3>
+          <p>
+            <strong>Optimal (Bélády's)</strong> replaces the page that will not
+            be used for the longest time in the future. It produces the minimum
+            possible page faults, but requires future knowledge of the reference
+            string, so it serves as a theoretical benchmark.
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
